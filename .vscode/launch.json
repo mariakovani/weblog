@@ -1,0 +1,14 @@
+{
+    "configurations": [
+        {
+            "type": "java",
+            "name": "Spring Boot-WeblogApplication<weblog>",
+            "request": "launch",
+            "cwd": "${workspaceFolder}",
+            "mainClass": "com.mkbff.weblog.WeblogApplication",
+            "projectName": "weblog",
+            "args": "",
+            "envFile": "${workspaceFolder}/.env"
+        }
+    ]
+}
