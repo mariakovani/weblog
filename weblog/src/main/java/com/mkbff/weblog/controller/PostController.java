@@ -2,7 +2,6 @@ package com.mkbff.weblog.controller;
 
 import com.mkbff.weblog.entities.Post;
 import com.mkbff.weblog.services.PostService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;

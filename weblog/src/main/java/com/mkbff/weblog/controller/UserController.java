@@ -3,7 +3,6 @@ package com.mkbff.weblog.controller;
 import com.mkbff.weblog.entities.User;
 import com.mkbff.weblog.services.UserService;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -24,7 +23,7 @@ public class UserController {
     }
 
     @GetMapping("/{id}")
-    public User getUserById(@PathVariable Long id) {
+    public User getUserById(@PathVariable Integer id) {
         return userService.getUserById(id);
     }
 }

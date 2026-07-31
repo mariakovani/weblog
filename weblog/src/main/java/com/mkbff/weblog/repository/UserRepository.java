@@ -5,6 +5,6 @@ import com.mkbff.weblog.entities.User;
 
 import java.util.List;
 
-public interface UserRepository extends JpaRepository<User, Long> {
+public interface UserRepository extends JpaRepository<User, Integer> {
     List<User> findByUsernameContainingIgnoreCase(String username);
 }

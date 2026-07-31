@@ -20,7 +20,7 @@ public class UserService {
         return userRepository.findByUsernameContainingIgnoreCase(username);
     }
 
-    public User getUserById(@NonNull Long id) {
+    public User getUserById(@NonNull Integer id) {
         return userRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("User not found with id: " + id));
     }
