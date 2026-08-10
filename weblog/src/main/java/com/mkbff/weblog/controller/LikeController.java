@@ -2,6 +2,8 @@ package com.mkbff.weblog.controller;
 
 import com.mkbff.weblog.entities.Like;
 import com.mkbff.weblog.services.LikeService;
+
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -27,11 +29,13 @@ public class LikeController {
     }
 
     @PostMapping
+    @PreAuthorize("isAuthenticated()")
     public Like likePost(@RequestBody Like like) {
         return likeService.likePost(like);
     }
 
     @DeleteMapping("/{id}")
+    @PreAuthorize("isAuthenticated()")
     public void unlikePost(@PathVariable Integer id) {
         likeService.unlikePost(id);
     }

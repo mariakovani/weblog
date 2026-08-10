@@ -2,9 +2,11 @@ package com.mkbff.weblog.services;
 
 import com.mkbff.weblog.entities.Comment;
 import com.mkbff.weblog.repository.CommentRepository;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+
 
 @Service
 public class CommentService {
@@ -24,6 +26,19 @@ public class CommentService {
     }
 
     public void deleteComment(Integer id) {
+        Comment comment = commentRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Comment not found with id: " + id));
+
+        String currentUsername = SecurityContextHolder.getContext().getAuthentication().getName();
+
+        boolean isOwner = comment.getAuthor().getUsername().equals(currentUsername);
+        boolean isAdmin = SecurityContextHolder.getContext().getAuthentication().getAuthorities().stream()
+                .anyMatch(a -> a.getAuthority().equals("ROLE_ADMIN"));
+
+        if (!isOwner && !isAdmin) {
+            throw new RuntimeException("You don't have permission to delete this comment");
+        }
+
         commentRepository.deleteById(id);
     }
 }

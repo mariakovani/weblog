@@ -3,6 +3,7 @@ package com.mkbff.weblog.controller;
 import com.mkbff.weblog.entities.Category;
 import com.mkbff.weblog.services.CategoryService;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.security.access.prepost.PreAuthorize;
 
 import java.util.List;
 
@@ -27,11 +28,13 @@ public class CategoryController {
     }
 
     @PostMapping
+    @PreAuthorize("hasRole('ADMIN')")
     public Category createCategory(@RequestBody Category category) {
         return categoryService.createCategory(category);
     }
 
     @DeleteMapping("/{id}")
+    @PreAuthorize("hasRole('ADMIN')")
     public void deleteCategory(@PathVariable Integer id) {
         categoryService.deleteCategory(id);
     }

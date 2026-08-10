@@ -3,6 +3,7 @@ package com.mkbff.weblog.controller;
 import com.mkbff.weblog.entities.Comment;
 import com.mkbff.weblog.services.CommentService;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.security.access.prepost.PreAuthorize;
 
 import java.util.List;
 
@@ -22,11 +23,13 @@ public class CommentController {
     }
 
     @PostMapping
+    @PreAuthorize("isAuthenticated()")
     public Comment createComment(@RequestBody Comment comment) {
         return commentService.createComment(comment);
     }
 
     @DeleteMapping("/{id}")
+    @PreAuthorize("isAuthenticated()")
     public void deleteComment(@PathVariable Integer id) {
         commentService.deleteComment(id);
     }

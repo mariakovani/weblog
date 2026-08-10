@@ -4,6 +4,7 @@ import com.mkbff.weblog.entities.User;
 import com.mkbff.weblog.services.UserService;
 
 import org.springframework.web.bind.annotation.*;
+import org.springframework.security.access.prepost.PreAuthorize;
 
 import java.util.List;
 
@@ -25,5 +26,11 @@ public class UserController {
     @GetMapping("/{id}")
     public User getUserById(@PathVariable Integer id) {
         return userService.getUserById(id);
+    }
+
+    @DeleteMapping("/{id}")
+    @PreAuthorize("hasRole('ADMIN')")
+    public void deleteUser(@PathVariable Integer id) {
+        userService.deleteUser(id);
     }
 }

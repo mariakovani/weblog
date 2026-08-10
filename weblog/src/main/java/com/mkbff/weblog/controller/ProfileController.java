@@ -2,6 +2,7 @@ package com.mkbff.weblog.controller;
 
 import com.mkbff.weblog.entities.Profile;
 import com.mkbff.weblog.services.ProfileService;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -20,12 +21,20 @@ public class ProfileController {
     }
 
     @PostMapping
+    @PreAuthorize("isAuthenticated()")
     public Profile createProfile(@RequestBody Profile profile) {
         return profileService.createProfile(profile);
     }
 
     @PutMapping("/{id}")
+    @PreAuthorize("isAuthenticated()")
     public Profile updateProfile(@PathVariable Integer id, @RequestBody Profile profile) {
         return profileService.updateProfile(id, profile);
+    }
+
+    @DeleteMapping("/{id}")
+    @PreAuthorize("isAuthenticated()")
+    public void deleteProfile(@PathVariable Integer id) {
+        profileService.deleteProfile(id);
     }
 }
