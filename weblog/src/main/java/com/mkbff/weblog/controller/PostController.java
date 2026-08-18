@@ -28,7 +28,7 @@ public class PostController {
     }
 
     @PostMapping
-    @PreAuthorize("hasAnyRole('AUTHOR', 'ADMIN')")
+    @PreAuthorize("isAuthenticated()")
     public Post createPost(@RequestBody Post post) {
         return postService.createPost(post);
     }
