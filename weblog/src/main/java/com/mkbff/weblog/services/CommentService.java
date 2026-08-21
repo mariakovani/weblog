@@ -1,7 +1,9 @@
 package com.mkbff.weblog.services;
 
 import com.mkbff.weblog.entities.Comment;
+import com.mkbff.weblog.entities.User;
 import com.mkbff.weblog.repository.CommentRepository;
+import com.mkbff.weblog.repository.UserRepository;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
@@ -12,9 +14,11 @@ import java.util.List;
 public class CommentService {
 
     private final CommentRepository commentRepository;
+    private final UserRepository userRepository;
 
-    public CommentService(CommentRepository commentRepository) {
+    public CommentService(CommentRepository commentRepository, UserRepository userRepository) {
         this.commentRepository = commentRepository;
+        this.userRepository = userRepository;
     }
 
     public List<Comment> getCommentsByPostId(Integer postId) {
@@ -22,6 +26,10 @@ public class CommentService {
     }
 
     public Comment createComment(Comment comment) {
+        String currentUsername = SecurityContextHolder.getContext().getAuthentication().getName();
+        User currentUser = userRepository.findByUsername(currentUsername)
+            .orElseThrow(() -> new RuntimeException("Authenticated user not found"));
+        comment.setAuthor(currentUser);
         return commentRepository.save(comment);
     }
 

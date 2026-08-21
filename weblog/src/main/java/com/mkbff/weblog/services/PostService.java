@@ -1,7 +1,9 @@
 package com.mkbff.weblog.services;
 
 import com.mkbff.weblog.entities.Post;
+import com.mkbff.weblog.entities.User;
 import com.mkbff.weblog.repository.PostRepository;
+import com.mkbff.weblog.repository.UserRepository;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
@@ -11,9 +13,11 @@ import java.util.List;
 public class PostService {
 
     private final PostRepository postRepository;
+    private final UserRepository userRepository;
 
-    public PostService(PostRepository postRepository) {
+    public PostService(PostRepository postRepository, UserRepository userRepository) {
         this.postRepository = postRepository;
+        this.userRepository = userRepository;
     }
 
     public List<Post> getAllPosts() {
@@ -26,6 +30,11 @@ public class PostService {
     }
 
     public Post createPost(Post post) {
+        String currentUsername = SecurityContextHolder.getContext().getAuthentication().getName();
+        User currentUser = userRepository.findByUsername(currentUsername)
+                .orElseThrow(() -> new RuntimeException("Authenticated user not found"));
+
+        post.setAuthor(currentUser);
         return postRepository.save(post);
     }
 

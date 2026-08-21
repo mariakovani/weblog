@@ -1,5 +1,6 @@
 import { getPosts } from "@/lib/api";
 import { Post } from "@/types";
+import Link from "next/link";
 
 export default async function Home() {
   const posts: Post[] = await getPosts();
@@ -15,7 +16,9 @@ export default async function Home() {
       <div className="space-y-6">
         {posts.map((post) => (
           <article key={post.id} className="border-b pb-4">
-            <h2 className="text-xl font-semibold">{post.title}</h2>
+            <Link href={`/posts/${post.id}`}>
+              <h2 className="text-xl font-semibold hover:underline">{post.title}</h2>
+            </Link>
             <p className="text-sm text-gray-500">
               by {post.author?.username} in {post.category?.name}
             </p>

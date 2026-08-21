@@ -18,3 +18,17 @@ export interface Post {
   author: User;
   category: Category;
 }
+
+export interface Comment {
+  id: number;
+  content: string;
+  createdAt: string;
+  author: User;
+  post: Post;
+}
+
+export interface Like {
+  id: number;
+  user: User;
+  post: Post;
+}
