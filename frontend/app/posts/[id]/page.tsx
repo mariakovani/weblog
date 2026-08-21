@@ -6,22 +6,27 @@ import CommentSection from "@/components/CommentSection";
 export default async function PostPage({
   params,
 }: {
-  params: { id: string };
+  params: Promise<{ id: string }>;
 }) {
-  const post: Post = await getPostById(Number(params.id));
+  const { id } = await params;
+
+  const post: Post = await getPostById(Number(id));
 
   return (
     <main className="max-w-3xl mx-auto p-8">
-      <h1 className="text-3xl font-bold mb-2">{post.title}</h1>
-      <p className="text-sm text-gray-500 mb-4">
-        by {post.author?.username} in {post.category?.name}
-      </p>
+    <h1 className="text-3xl font-bold mb-2">{post.title}</h1>
 
-      <p className="mb-6 whitespace-pre-wrap">{post.content}</p>
+    <p className="text-sm text-gray-500 mb-4">
+    by {post.author?.username} in {post.category?.name}
+    </p>
 
-      <LikeButton postId={post.id} />
+    <p className="mb-6 whitespace-pre-wrap">
+    {post.content}
+    </p>
 
-      <CommentSection postId={post.id} />
+    <LikeButton postId={post.id} />
+
+    <CommentSection postId={post.id} />
     </main>
   );
 }

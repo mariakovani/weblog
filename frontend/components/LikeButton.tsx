@@ -26,8 +26,10 @@ export default function LikeButton({ postId }: { postId: number }) {
         setMyLikeId(mine ? mine.id : null);
       }
     } catch (err) {
-      // silently ignore for now
+      console.log("FULL LIKE ERROR:", err);
+      alert(err instanceof Error ? err.message : "Something went wrong.");
     }
+
   }
 
   async function handleClick() {

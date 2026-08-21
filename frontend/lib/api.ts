@@ -68,6 +68,44 @@ export async function getCommentsByPost(postId: number) {
   return res.json();
 }
 
+export async function getCategories() {
+  const res = await fetch(`${API_BASE_URL}/categories`, {
+    cache: "no-store",
+  });
+
+  if (!res.ok) {
+    throw new Error("Failed to fetch categories");
+  }
+
+  return res.json();
+}
+
+export async function createPost(
+  title: string,
+  content: string,
+  categoryId: number,
+  token: string
+) {
+  const res = await fetch(`${API_BASE_URL}/posts`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${token}`,
+    },
+    body: JSON.stringify({
+      title,
+      content,
+      category: { id: categoryId },
+    }),
+  });
+
+  if (!res.ok) {
+    throw new Error("Failed to create post");
+  }
+
+  return res.json();
+}
+
 export async function createComment(
   content: string,
   postId: number,
@@ -129,6 +167,25 @@ export async function getLikesByPost(postId: number) {
   return res.json();
 }
 
+// export async function likePost(postId: number, token: string) {
+//   const res = await fetch(`${API_BASE_URL}/likes`, {
+//     method: "POST",
+//     headers: {
+//       "Content-Type": "application/json",
+//       Authorization: `Bearer ${token}`,
+//     },
+//     body: JSON.stringify({
+//       post: { id: postId },
+//     }),
+//   });
+
+//   if (!res.ok) {
+//     throw new Error("Failed to like post");
+//   }
+
+//   return res.json();
+// }
+
 export async function likePost(postId: number, token: string) {
   const res = await fetch(`${API_BASE_URL}/likes`, {
     method: "POST",
@@ -142,11 +199,18 @@ export async function likePost(postId: number, token: string) {
   });
 
   if (!res.ok) {
-    throw new Error("Failed to like post");
-  }
+  const errorText = await res.text();
+
+  console.log("STATUS:", res.status);
+  console.log("ERROR BODY:", errorText);
+
+  throw new Error(`Failed to like post: ${res.status} ${errorText}`);
+}
+
 
   return res.json();
 }
+
 
 export async function unlikePost(likeId: number, token: string) {
   const res = await fetch(`${API_BASE_URL}/likes/${likeId}`, {

@@ -8,15 +8,16 @@ export default function Navbar() {
 
   return (
     <nav className="flex justify-between items-center p-4 border-b">
-      <Link href="/" className="font-bold text-lg">
-        Weblog
-      </Link>
+      <Link href="/" className="font-bold text-lg">Weblog</Link>
 
       <div className="flex gap-4">
         {token ? (
-          <button onClick={logout} className="text-red-600">
-            Logout
-          </button>
+          <>
+            <Link href="/posts/new">New Post</Link>
+            <button onClick={logout} className="text-red-600">
+              Logout
+            </button>
+          </>
         ) : (
           <>
             <Link href="/login">Login</Link>
