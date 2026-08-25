@@ -2,14 +2,17 @@
 
 import { useState, useEffect } from "react";
 import { useAuth } from "@/context/AuthContext";
-import { getCommentsByPost, createComment, deleteComment } from "@/lib/api";
+import { getCommentsByPost, createComment, deleteComment, updateComment } from "@/lib/api";
 import { Comment } from "@/types";
+import { getDisplayDate } from "@/lib/utils";
 
 export default function CommentSection({ postId }: { postId: number }) {
   const { token } = useAuth();
   const [comments, setComments] = useState<Comment[]>([]);
   const [newComment, setNewComment] = useState("");
   const [error, setError] = useState("");
+  const [editingId, setEditingId] = useState<number | null>(null);
+  const [editContent, setEditContent] = useState("");
 
   useEffect(() => {
     loadComments();
@@ -51,6 +54,27 @@ export default function CommentSection({ postId }: { postId: number }) {
     }
   }
 
+  function startEdit(comment: Comment) {
+    setEditingId(comment.id);
+    setEditContent(comment.content);
+  }
+
+  function cancelEdit() {
+    setEditingId(null);
+    setEditContent("");
+  }
+
+  async function saveEdit(id: number) {
+    if (!token) return;
+    try {
+      await updateComment(id, editContent, token);
+      setEditingId(null);
+      await loadComments();
+    } catch (err) {
+      setError("Failed to update comment.");
+    }
+  }
+
   function getCurrentUsername(): string | null {
     if (!token) return null;
     try {
@@ -59,6 +83,10 @@ export default function CommentSection({ postId }: { postId: number }) {
     } catch {
       return null;
     }
+  }
+
+  function isEdited(comment: Comment): boolean {
+    return !!comment.updatedAt && comment.updatedAt !== comment.createdAt;
   }
 
   const currentUsername = getCurrentUsername();
@@ -94,23 +122,59 @@ export default function CommentSection({ postId }: { postId: number }) {
 
         {comments.map((comment) => (
           <div key={comment.id} className="border-b pb-2">
-            <div className="flex justify-between items-start">
-              <div>
-                <p className="text-sm font-medium">
-                  {comment.author?.username}
-                </p>
-                <p className="text-sm">{comment.content}</p>
+            {editingId === comment.id ? (
+              <div className="space-y-2">
+                <textarea
+                  value={editContent}
+                  onChange={(e) => setEditContent(e.target.value)}
+                  className="w-full border p-2 rounded"
+                  rows={2}
+                />
+                <div className="flex gap-2">
+                  <button
+                    onClick={() => saveEdit(comment.id)}
+                    className="text-xs bg-black text-white px-3 py-1 rounded"
+                  >
+                    Save
+                  </button>
+                  <button
+                    onClick={cancelEdit}
+                    className="text-xs text-gray-500"
+                  >
+                    Cancel
+                  </button>
+                </div>
               </div>
+            ) : (
+              <div className="flex justify-between items-start">
+                <div>
+                  <p className="text-sm font-medium">
+                    {comment.author?.username}
+                  </p>
+                  <p className="text-sm">{comment.content}</p>
+                  <p className="text-xs text-gray-400">
+                    {getDisplayDate(comment.createdAt, comment.updatedAt)}
+                  </p>
+                </div>
 
-              {currentUsername === comment.author?.username && (
-                <button
-                  onClick={() => handleDelete(comment.id)}
-                  className="text-xs text-red-600"
-                >
-                  Delete
-                </button>
-              )}
-            </div>
+                {currentUsername === comment.author?.username && (
+                  <div className="flex gap-2">
+                    <button
+                      onClick={() => startEdit(comment)}
+                      className="text-xs text-blue-600"
+                    >
+                      Edit
+                    </button>
+                    <button
+                      onClick={() => handleDelete(comment.id)}
+                      className="text-xs text-red-600"
+                    >
+                      Delete
+                    </button>
+                  </div>
+                )}
+              </div>
+            )}
           </div>
         ))}
       </div>

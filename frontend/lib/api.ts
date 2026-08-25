@@ -237,3 +237,51 @@ export async function deletePost(id: number, token: string) {
     throw new Error("Failed to delete post");
   }
 }
+
+export async function updatePost(
+  id: number,
+  title: string,
+  content: string,
+  categoryId: number,
+  token: string
+) {
+  const res = await fetch(`${API_BASE_URL}/posts/${id}`, {
+    method: "PUT",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${token}`,
+    },
+    body: JSON.stringify({
+      title,
+      content,
+      category: { id: categoryId },
+    }),
+  });
+
+  if (!res.ok) {
+    throw new Error("Failed to update post");
+  }
+
+  return res.json();
+}
+
+export async function updateComment(
+  id: number,
+  content: string,
+  token: string
+) {
+  const res = await fetch(`${API_BASE_URL}/comments/${id}`, {
+    method: "PUT",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${token}`,
+    },
+    body: JSON.stringify({ content }),
+  });
+
+  if (!res.ok) {
+    throw new Error("Failed to update comment");
+  }
+
+  return res.json();
+}

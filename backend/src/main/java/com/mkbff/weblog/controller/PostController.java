@@ -38,4 +38,10 @@ public class PostController {
     public void deletePost(@PathVariable Integer id) {
         postService.deletePost(id);
     }
+
+    @PutMapping("/{id}")
+    @PreAuthorize("isAuthenticated()")
+    public Post updatePost(@PathVariable Integer id, @RequestBody Post post) {
+        return postService.updatePost(id, post);
+    }
 }

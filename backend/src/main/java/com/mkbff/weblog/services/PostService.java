@@ -54,4 +54,24 @@ public class PostService {
 
         postRepository.deleteById(id);
     }
+
+    public Post updatePost(Integer id, Post updatedPost) {
+        Post existing = postRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Post not found with id: " + id));
+
+        String currentUsername = SecurityContextHolder.getContext().getAuthentication().getName();
+        boolean isOwner = existing.getAuthor().getUsername().equals(currentUsername);
+        boolean isAdmin = SecurityContextHolder.getContext().getAuthentication().getAuthorities().stream()
+                .anyMatch(a -> a.getAuthority().equals("ROLE_ADMIN"));
+
+        if (!isOwner && !isAdmin) {
+            throw new RuntimeException("You can only edit your own posts");
+        }
+
+        existing.setTitle(updatedPost.getTitle());
+        existing.setContent(updatedPost.getContent());
+        existing.setCategory(updatedPost.getCategory());
+
+        return postRepository.save(existing);
+    }
 }

@@ -15,6 +15,7 @@ export interface Post {
   title: string;
   content: string;
   createdAt: string;
+  updatedAt: string | null;
   author: User;
   category: Category;
 }
@@ -23,6 +24,7 @@ export interface Comment {
   id: number;
   content: string;
   createdAt: string;
+  updatedAt: string | null;
   author: User;
   post: Post;
 }

@@ -33,4 +33,10 @@ public class CommentController {
     public void deleteComment(@PathVariable Integer id) {
         commentService.deleteComment(id);
     }
+
+    @PutMapping("/{id}")
+    @PreAuthorize("isAuthenticated()")
+    public Comment updateComment(@PathVariable Integer id, @RequestBody Comment comment) {
+        return commentService.updateComment(id, comment);
+    }
 }
