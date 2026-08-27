@@ -79,7 +79,7 @@ export default function EditPostPage({
 
   return (
     <main className="max-w-xl mx-auto p-8">
-      <h1 className="text-2xl font-bold mb-6">
+      <h1 className="font-didot font-bold text-2xl">
         Edit Post
       </h1>
 
@@ -95,7 +95,11 @@ export default function EditPostPage({
         <textarea
           value={content}
           onChange={(e) => setContent(e.target.value)}
-          className="w-full border p-2 rounded h-40"
+          onInput={(e) => {
+            e.currentTarget.style.height = "auto";
+            e.currentTarget.style.height = `${e.currentTarget.scrollHeight}px`;
+          }}
+          className="w-full border p-2 rounded"
           required
         />
 
@@ -124,10 +128,7 @@ export default function EditPostPage({
           </p>
         )}
 
-        <button
-          type="submit"
-          className="w-full bg-black text-white py-2 rounded"
-        >
+        <button type="submit" className="w-full bg-black text-white py-2 rounded">
           Save Changes
         </button>
       </form>

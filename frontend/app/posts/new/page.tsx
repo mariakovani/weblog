@@ -43,7 +43,9 @@ export default function NewPostPage() {
 
     return (
         <main className="max-w-xl mx-auto p-8">
-        <h1 className="text-2xl font-bold mb-6">New Post</h1>
+        <h1 className="text-2xl font-bold mb-6">
+            New Post
+        </h1>
 
         <form onSubmit={handleSubmit} className="space-y-4">
         <input
@@ -59,7 +61,11 @@ export default function NewPostPage() {
         placeholder="Content"
         value={content}
         onChange={(e) => setContent(e.target.value)}
-        className="w-full border p-2 rounded h-40"
+        onInput={(e) => {
+            e.currentTarget.style.height = "auto";
+            e.currentTarget.style.height = `${e.currentTarget.scrollHeight}px`;
+        }}
+        className="w-full border p-2 rounded"
         required
         />
 
@@ -79,11 +85,8 @@ export default function NewPostPage() {
 
         {error && <p className="text-red-600 text-sm">{error}</p>}
 
-        <button
-        type="submit"
-        className="w-full bg-black text-white py-2 rounded"
-        >
-        Publish
+        <button type="submit" className="w-full bg-black text-white py-2 rounded">
+            Publish
         </button>
         </form>
         </main>

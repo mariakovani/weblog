@@ -93,21 +93,24 @@ export default function CommentSection({ postId }: { postId: number }) {
 
   return (
     <div className="mt-8">
-      <h2 className="text-lg font-semibold mb-4">Comments</h2>
+      <h2 className="text-lg font-semibold mb-4">
+        Comments
+      </h2>
 
       {token && (
-        <form onSubmit={handleSubmit} className="mb-6 space-y-2">
+        <form onSubmit={handleSubmit} className="mb-6 space-y-3">
           <textarea
             value={newComment}
             onChange={(e) => setNewComment(e.target.value)}
-            placeholder="Write a comment..."
-            className="w-full border p-2 rounded"
-            rows={3}
+            placeholder="Share your thoughts..."
+            className="input"
+            rows={2}
+            onInput={(e) => {
+              e.currentTarget.style.height = "auto";
+              e.currentTarget.style.height = `${e.currentTarget.scrollHeight}px`;
+            }}
           />
-          <button
-            type="submit"
-            className="bg-black text-white px-4 py-1 rounded text-sm"
-          >
+          <button type="submit" className="btn btn-primary">
             Post Comment
           </button>
         </form>
@@ -123,58 +126,46 @@ export default function CommentSection({ postId }: { postId: number }) {
         {comments.map((comment) => (
           <div key={comment.id} className="border-b pb-2">
             {editingId === comment.id ? (
-              <div className="space-y-2">
-                <textarea
-                  value={editContent}
-                  onChange={(e) => setEditContent(e.target.value)}
-                  className="w-full border p-2 rounded"
-                  rows={2}
-                />
-                <div className="flex gap-2">
-                  <button
-                    onClick={() => saveEdit(comment.id)}
-                    className="text-xs bg-black text-white px-3 py-1 rounded"
-                  >
-                    Save
-                  </button>
-                  <button
-                    onClick={cancelEdit}
-                    className="text-xs text-gray-500"
-                  >
-                    Cancel
-                  </button>
-                </div>
-              </div>
-            ) : (
-              <div className="flex justify-between items-start">
-                <div>
-                  <p className="text-sm font-medium">
-                    {comment.author?.username}
-                  </p>
-                  <p className="text-sm">{comment.content}</p>
-                  <p className="text-xs text-gray-400">
-                    {getDisplayDate(comment.createdAt, comment.updatedAt)}
-                  </p>
-                </div>
+  <div className="space-y-2">
+    <textarea
+      value={editContent}
+      onChange={(e) => setEditContent(e.target.value)}
+      onInput={(e) => {
+        e.currentTarget.style.height = "auto";
+        e.currentTarget.style.height = `${e.currentTarget.scrollHeight}px`;
+      }}
+      className="input"
+      rows={2}
+    />
+    <div className="flex gap-2">
+      <button onClick={() => saveEdit(comment.id)} className="btn btn-primary" style={{ padding: "0.4rem 1rem", fontSize: "0.8rem" }}>
+        Save
+      </button>
+      <button onClick={cancelEdit} className="btn btn-ghost" style={{ padding: "0.4rem 1rem", fontSize: "0.8rem" }}>
+        Cancel
+      </button>
+    </div>
+  </div>
+) : (
+  <div className="flex justify-between items-start">
+    <div>
+      <p className="text-sm font-bold">{comment.author?.username}</p>
+      <p className="text-sm ">{comment.content}</p>
+      <p className="text-sm text-gray-500">{getDisplayDate(comment.createdAt, comment.updatedAt)}</p>
+    </div>
 
-                {currentUsername === comment.author?.username && (
-                  <div className="flex gap-2">
-                    <button
-                      onClick={() => startEdit(comment)}
-                      className="text-xs text-blue-600"
-                    >
-                      Edit
-                    </button>
-                    <button
-                      onClick={() => handleDelete(comment.id)}
-                      className="text-xs text-red-600"
-                    >
-                      Delete
-                    </button>
-                  </div>
-                )}
-              </div>
-            )}
+    {currentUsername === comment.author?.username && (
+      <div className="flex gap-3">
+        <button onClick={() => startEdit(comment)} className="btn btn-danger" style={{ color: "var(--amber)" }}>
+          Edit
+        </button>
+        <button onClick={() => handleDelete(comment.id)} className="btn btn-danger">
+          Delete
+        </button>
+      </div>
+    )}
+  </div>
+)}
           </div>
         ))}
       </div>

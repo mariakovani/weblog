@@ -1,7 +1,14 @@
 import type { Metadata } from "next";
+import { GFS_Didot } from "next/font/google";
 import "./globals.css";
 import { AuthProvider } from "@/context/AuthContext";
 import Navbar from "@/components/Navbar";
+
+const gfsDidot = GFS_Didot({
+  weight: "400",
+  subsets: ["greek", "latin"],
+  variable: "--font-didot",
+});
 
 export const metadata: Metadata = {
   title: "Weblog",
@@ -14,7 +21,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
+    <html lang="en" className={gfsDidot.variable}>
       <body>
         <AuthProvider>
           <Navbar />

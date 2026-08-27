@@ -7,21 +7,32 @@ export default function Navbar() {
   const { token, logout } = useAuth();
 
   return (
-    <nav className="flex justify-between items-center p-4 border-b">
-      <Link href="/" className="font-bold text-lg">Weblog</Link>
+    <nav
+      className="flex justify-between items-center px-8 py-5 border-b"
+      style={{ borderColor: "var(--border)" }}
+    >
+      <Link href="/" className="font-didot text-3xl">
+        Weblog
+      </Link>
 
-      <div className="flex gap-4">
+      <div className="flex items-center gap-3">
         {token ? (
           <>
-            <Link href="/posts/new">New Post</Link>
-            <button onClick={logout} className="text-red-600">
+            <Link href="/posts/new" className="btn btn-primary font-didot text-lg">
+              + New Post
+            </Link>
+            <button onClick={logout} className="btn btn-ghost font-didot text-lg">
               Logout
             </button>
           </>
         ) : (
           <>
-            <Link href="/login">Login</Link>
-            <Link href="/register">Register</Link>
+            <Link href="/login" className="btn btn-ghost font-didot text-lg">
+              Login
+            </Link>
+            <Link href="/register" className="btn btn-primary font-didot text-lg">
+              Register
+            </Link>
           </>
         )}
       </div>

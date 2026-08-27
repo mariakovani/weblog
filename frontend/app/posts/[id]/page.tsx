@@ -16,16 +16,20 @@ export default async function PostPage({
 
   return (
     <main className="max-w-3xl mx-auto p-8">
-      <h1 className="text-3xl font-bold mb-2">
+      <span className="badge">
+        {post.category?.name}
+      </span>
+
+      <h1 className="font-didot font-bold text-4xl mt-4 mb-2">
         {post.title}
       </h1>
 
       <p className="text-sm text-gray-500 mb-4">
-        by {post.author?.username} in {post.category?.name} •{" "}
+        by {post.author?.username} ·{" "}
         {getDisplayDate(post.createdAt, post.updatedAt)}
       </p>
 
-      <p className="mb-4 whitespace-pre-wrap">
+      <p className="mb-6 whitespace-pre-wrap leading-relaxed">
         {post.content}
       </p>
 
@@ -34,7 +38,9 @@ export default async function PostPage({
         authorUsername={post.author?.username}
       />
 
-      <LikeButton postId={post.id} />
+      <div className="mt-4">
+        <LikeButton postId={post.id} />
+      </div>
 
       <CommentSection postId={post.id} />
     </main>

@@ -57,9 +57,7 @@ export default function LikeButton({ postId }: { postId: number }) {
     <button
       onClick={handleClick}
       disabled={loading}
-      className={`text-sm px-3 py-1 rounded border ${
-        myLikeId ? "bg-red-100 border-red-400 text-red-600" : "border-gray-300"
-      }`}
+      className={`btn btn-like ${myLikeId ? "active" : ""}`}
     >
       {myLikeId ? "★" : "☆"} {likes.length}
     </button>
