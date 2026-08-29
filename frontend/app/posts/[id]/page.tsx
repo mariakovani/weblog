@@ -4,6 +4,7 @@ import { Post } from "@/types";
 import LikeButton from "@/components/LikeButton";
 import CommentSection from "@/components/CommentSection";
 import EditPostLink from "@/components/EditPostLink";
+import Link from "next/dist/client/link";
 
 export default async function PostPage({
   params,
@@ -11,7 +12,6 @@ export default async function PostPage({
   params: Promise<{ id: string }>;
 }) {
   const { id } = await params;
-
   const post: Post = await getPostById(Number(id));
 
   return (
@@ -25,8 +25,11 @@ export default async function PostPage({
       </h1>
 
       <p className="text-sm text-gray-500 mb-4">
-        by {post.author?.username} ·{" "}
-        {getDisplayDate(post.createdAt, post.updatedAt)}
+        by{" "}
+        <Link href={`/profile/${post.author?.id}`} className="hover:underline">
+          {post.author?.username}
+        </Link>{" "}
+        · {getDisplayDate(post.createdAt, post.updatedAt)}
       </p>
 
       <p className="mb-6 whitespace-pre-wrap leading-relaxed">

@@ -74,4 +74,8 @@ public class PostService {
 
         return postRepository.save(existing);
     }
+
+    public List<Post> getPostsByAuthorId(Integer authorId) {
+        return postRepository.findByAuthorId(authorId);
+    }
 }

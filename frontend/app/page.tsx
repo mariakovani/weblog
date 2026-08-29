@@ -33,8 +33,8 @@ export default async function Home() {
 
               <p
                 className="mt-3 text-sm">
-                {post.content.slice(0, 140)}
-                {post.content.length > 140 ? "…" : ""}
+                {post.content.slice(0, 200)}
+                {post.content.length > 200 ? "…" : ""}
               </p>
             </article>
           </Link>

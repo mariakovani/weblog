@@ -22,8 +22,13 @@ export default function EditPostLink({
   }
 
   return (
-    <Link href={`/posts/${postId}/edit`} className="text-sm text-blue-600 block mb-4">
+    <div className="flex justify-start mb-4">
+    <Link
+      href={`/posts/${postId}/edit`}
+      className="text-sm text-black border border-black px-3 py-1 rounded hover:bg-black hover:text-white transition"
+    >
       Edit Post
     </Link>
+  </div>
   );
 }

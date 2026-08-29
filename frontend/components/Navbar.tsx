@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { useAuth } from "@/context/AuthContext";
+import { getUserIdFromToken } from "@/context/AuthContext";
 
 export default function Navbar() {
   const { token, logout } = useAuth();
@@ -16,15 +17,18 @@ export default function Navbar() {
       </Link>
 
       <div className="flex items-center gap-3">
-        {token ? (
-          <>
-            <Link href="/posts/new" className="btn btn-primary font-didot text-lg">
-              + New Post
-            </Link>
-            <button onClick={logout} className="btn btn-ghost font-didot text-lg">
-              Logout
-            </button>
-          </>
+          {token ? (
+            <>
+              <Link href={`/profile/${getUserIdFromToken(token)}`} className="btn btn-ghost font-didot text-lg">
+                Profile
+              </Link>
+              <Link href="/posts/new" className="btn btn-primary font-didot text-lg">
+                + New Post
+              </Link>
+              <button onClick={logout} className="btn btn-ghost font-didot text-lg">
+                Logout
+              </button>
+            </>
         ) : (
           <>
             <Link href="/login" className="btn btn-ghost font-didot text-lg">

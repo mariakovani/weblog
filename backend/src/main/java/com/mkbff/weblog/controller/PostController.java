@@ -5,6 +5,7 @@ import com.mkbff.weblog.services.PostService;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
+import java.lang.classfile.constantpool.IntegerEntry;
 import java.util.List;
 
 @RestController
@@ -43,5 +44,10 @@ public class PostController {
     @PreAuthorize("isAuthenticated()")
     public Post updatePost(@PathVariable Integer id, @RequestBody Post post) {
         return postService.updatePost(id, post);
+    }
+
+    @GetMapping("/user/{userId}")
+    public List<Post> getPostsByUser(@PathVariable Integer userId) {
+        return postService.getPostsByAuthorId(userId);
     }
 }

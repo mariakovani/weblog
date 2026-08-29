@@ -1,6 +1,8 @@
 package com.mkbff.weblog.services;
 
 import com.mkbff.weblog.entities.Profile;
+import com.mkbff.weblog.entities.User;
+import com.mkbff.weblog.repository.UserRepository;
 import com.mkbff.weblog.repository.ProfileRepository;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
@@ -10,8 +12,11 @@ public class ProfileService {
 
     private final ProfileRepository profileRepository;
 
-    public ProfileService(ProfileRepository profileRepository) {
+    private final UserRepository userRepository;
+
+    public ProfileService(ProfileRepository profileRepository, UserRepository userRepository) {
         this.profileRepository = profileRepository;
+        this.userRepository = userRepository;
     }
 
     public Profile getProfileByUserId(Integer userId) {
@@ -20,6 +25,11 @@ public class ProfileService {
     }
 
     public Profile createProfile(Profile profile) {
+        String currentUsername = SecurityContextHolder.getContext().getAuthentication().getName();
+        User currentUser = userRepository.findByUsername(currentUsername)
+                .orElseThrow(() -> new RuntimeException("Authenticated user not found"));
+
+        profile.setUser(currentUser);
         return profileRepository.save(profile);
     }
 
@@ -66,9 +76,12 @@ public class ProfileService {
         }
     }
 
-
     private boolean hasRole(String role) {
         return SecurityContextHolder.getContext().getAuthentication().getAuthorities().stream()
                 .anyMatch(a -> a.getAuthority().equals(role));
+    }
+
+    public java.util.Optional<Profile> findProfileByUserId(Integer userId) {
+        return profileRepository.findByUserId(userId);
     }
 }

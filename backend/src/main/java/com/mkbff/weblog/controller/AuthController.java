@@ -40,7 +40,7 @@ public class AuthController {
             throw new RuntimeException("Invalid username or password");
         }
 
-        String token = jwtUtility.generateToken(user.getUsername(), user.getRole().name());
+        String token = jwtUtility.generateToken(user.getUsername(), user.getRole().name(), user.getId());
 
         return Map.of("token", token);
     }

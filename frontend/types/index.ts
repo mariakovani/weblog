@@ -34,3 +34,12 @@ export interface Like {
   user: User;
   post: Post;
 }
+
+export interface Profile {
+  id: number;
+  bio: string | null;
+  avatarUrl: string | null;
+  location: string | null;
+  websiteUrl: string | null;
+  user: User;
+}

@@ -167,25 +167,6 @@ export async function getLikesByPost(postId: number) {
   return res.json();
 }
 
-// export async function likePost(postId: number, token: string) {
-//   const res = await fetch(`${API_BASE_URL}/likes`, {
-//     method: "POST",
-//     headers: {
-//       "Content-Type": "application/json",
-//       Authorization: `Bearer ${token}`,
-//     },
-//     body: JSON.stringify({
-//       post: { id: postId },
-//     }),
-//   });
-
-//   if (!res.ok) {
-//     throw new Error("Failed to like post");
-//   }
-
-//   return res.json();
-// }
-
 export async function likePost(postId: number, token: string) {
   const res = await fetch(`${API_BASE_URL}/likes`, {
     method: "POST",
@@ -281,6 +262,87 @@ export async function updateComment(
 
   if (!res.ok) {
     throw new Error("Failed to update comment");
+  }
+
+  return res.json();
+}
+
+export async function getUserById(id: number) {
+  const res = await fetch(`${API_BASE_URL}/users/${id}`, {
+    cache: "no-store",
+  });
+
+  if (!res.ok) {
+    throw new Error("Failed to fetch user");
+  }
+
+  return res.json();
+}
+
+export async function getPostsByUser(userId: number) {
+  const res = await fetch(`${API_BASE_URL}/posts/user/${userId}`, {
+    cache: "no-store",
+  });
+
+  if (!res.ok) {
+    throw new Error("Failed to fetch user's posts");
+  }
+
+  return res.json();
+}
+
+export async function getProfileByUserId(userId: number) {
+  const res = await fetch(`${API_BASE_URL}/profiles/user/${userId}`, {
+    cache: "no-store",
+  });
+
+  if (res.status === 404 || !res.ok) {
+    return null;
+  }
+
+  return res.json();
+}
+
+export async function createProfile(
+  bio: string,
+  avatarUrl: string,
+  location: string,
+  token: string
+) {
+  const res = await fetch(`${API_BASE_URL}/profiles`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${token}`,
+    },
+    body: JSON.stringify({ bio, avatarUrl, location }),
+  });
+
+  if (!res.ok) {
+    throw new Error("Failed to create profile");
+  }
+
+  return res.json();
+}
+
+export async function updateProfile(
+  id: number,
+  bio: string,
+  avatarUrl: string,
+  location: string,
+  token: string
+) {
+  const res = await fetch(`${API_BASE_URL}/profiles/${id}`, {
+    method: "PUT",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${token}`,
+    },
+    body: JSON.stringify({ bio, avatarUrl, location }),
+  });
+
+  if (!res.ok) {
+    throw new Error("Failed to update profile");
   }
 
   return res.json();

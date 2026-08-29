@@ -5,6 +5,7 @@ import { useAuth } from "@/context/AuthContext";
 import { getCommentsByPost, createComment, deleteComment, updateComment } from "@/lib/api";
 import { Comment } from "@/types";
 import { getDisplayDate } from "@/lib/utils";
+import Link from "next/dist/client/link";
 
 export default function CommentSection({ postId }: { postId: number }) {
   const { token } = useAuth();
@@ -149,7 +150,9 @@ export default function CommentSection({ postId }: { postId: number }) {
 ) : (
   <div className="flex justify-between items-start">
     <div>
-      <p className="text-sm font-bold">{comment.author?.username}</p>
+      <Link href={`/profile/${comment.author?.id}`} className="text-sm font-bold hover:underline">
+        {comment.author?.username}
+      </Link>
       <p className="text-sm ">{comment.content}</p>
       <p className="text-sm text-gray-500">{getDisplayDate(comment.createdAt, comment.updatedAt)}</p>
     </div>

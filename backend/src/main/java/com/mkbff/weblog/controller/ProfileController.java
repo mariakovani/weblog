@@ -4,6 +4,7 @@ import com.mkbff.weblog.entities.Profile;
 import com.mkbff.weblog.services.ProfileService;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.http.ResponseEntity;
 
 @RestController
 @RequestMapping("/api/profiles")
@@ -16,8 +17,10 @@ public class ProfileController {
     }
 
     @GetMapping("/user/{userId}")
-    public Profile getProfileByUserId(@PathVariable Integer userId) {
-        return profileService.getProfileByUserId(userId);
+    public ResponseEntity<Profile> getProfileByUserId(@PathVariable Integer userId) {
+        return profileService.findProfileByUserId(userId)
+                .map(ResponseEntity::ok)
+                .orElse(ResponseEntity.notFound().build());
     }
 
     @PostMapping
