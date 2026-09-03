@@ -13,12 +13,15 @@ export default function Navbar() {
       style={{ borderColor: "var(--border)" }}
     >
       <Link href="/" className="font-didot text-3xl">
-        Weblog
+        Weblog ᝰ 
       </Link>
 
       <div className="flex items-center gap-3">
           {token ? (
             <>
+              <Link href="/search" className="btn btn-ghost font-didot text-lg">
+                Search
+              </Link>
               <Link href={`/profile/${getUserIdFromToken(token)}`} className="btn btn-ghost font-didot text-lg">
                 Profile
               </Link>

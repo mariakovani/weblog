@@ -41,5 +41,4 @@ export interface Profile {
   avatarUrl: string | null;
   location: string | null;
   websiteUrl: string | null;
-  user: User;
 }

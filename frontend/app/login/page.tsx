@@ -21,13 +21,13 @@ export default function LoginPage() {
       login(data.token);
       router.push("/");
     } catch (err) {
-      setError("Invalid username or password");
+      setError(err instanceof Error ? err.message : "Something went wrong.");
     }
   }
 
   return (
     <main className="max-w-sm mx-auto p-8">
-      <h1 className="text-2xl font-bold mb-6">
+      <h1 className="font-didot text-2xl font-bold mb-6">
         Login
       </h1>
 

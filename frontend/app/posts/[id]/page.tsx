@@ -4,7 +4,7 @@ import { Post } from "@/types";
 import LikeButton from "@/components/LikeButton";
 import CommentSection from "@/components/CommentSection";
 import EditPostLink from "@/components/EditPostLink";
-import Link from "next/dist/client/link";
+import Link from "next/link";
 
 export default async function PostPage({
   params,
@@ -20,7 +20,7 @@ export default async function PostPage({
         {post.category?.name}
       </span>
 
-      <h1 className="font-didot font-bold text-4xl mt-4 mb-2">
+      <h1 className="font-didot font-bold text-4xl mt-4 mb-2 break-words">
         {post.title}
       </h1>
 
@@ -32,13 +32,13 @@ export default async function PostPage({
         · {getDisplayDate(post.createdAt, post.updatedAt)}
       </p>
 
-      <p className="mb-6 whitespace-pre-wrap leading-relaxed">
+      <p className="mb-6 whitespace-pre-wrap leading-relaxed break-words">
         {post.content}
       </p>
 
       <EditPostLink
         postId={post.id}
-        authorUsername={post.author?.username}
+        authorId={post.author?.id}
       />
 
       <div className="mt-4">

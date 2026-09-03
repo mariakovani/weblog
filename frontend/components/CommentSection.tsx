@@ -5,7 +5,8 @@ import { useAuth } from "@/context/AuthContext";
 import { getCommentsByPost, createComment, deleteComment, updateComment } from "@/lib/api";
 import { Comment } from "@/types";
 import { getDisplayDate } from "@/lib/utils";
-import Link from "next/dist/client/link";
+import Link from "next/link";
+import { getUserIdFromToken } from "@/context/AuthContext";
 
 export default function CommentSection({ postId }: { postId: number }) {
   const { token } = useAuth();
@@ -24,7 +25,7 @@ export default function CommentSection({ postId }: { postId: number }) {
       const data = await getCommentsByPost(postId);
       setComments(data);
     } catch (err) {
-      setError("Failed to load comments");
+      setError(err instanceof Error ? err.message : "Something went wrong.");
     }
   }
 
@@ -41,7 +42,7 @@ export default function CommentSection({ postId }: { postId: number }) {
       setNewComment("");
       await loadComments();
     } catch (err) {
-      setError("Failed to post comment.");
+      setError(err instanceof Error ? err.message : "Something went wrong.");
     }
   }
 
@@ -51,7 +52,7 @@ export default function CommentSection({ postId }: { postId: number }) {
       await deleteComment(id, token);
       await loadComments();
     } catch (err) {
-      setError("You don't have permission to delete this comment.");
+      setError(err instanceof Error ? err.message : "Something went wrong.");
     }
   }
 
@@ -72,25 +73,15 @@ export default function CommentSection({ postId }: { postId: number }) {
       setEditingId(null);
       await loadComments();
     } catch (err) {
-      setError("Failed to update comment.");
+      setError(err instanceof Error ? err.message : "Something went wrong.");
     }
   }
 
-  function getCurrentUsername(): string | null {
-    if (!token) return null;
-    try {
-      const payload = JSON.parse(atob(token.split(".")[1]));
-      return payload.sub;
-    } catch {
-      return null;
-    }
-  }
+  const currentUserId = token ? getUserIdFromToken(token) : null;
 
   function isEdited(comment: Comment): boolean {
     return !!comment.updatedAt && comment.updatedAt !== comment.createdAt;
   }
-
-  const currentUsername = getCurrentUsername();
 
   return (
     <div className="mt-8">
@@ -157,8 +148,8 @@ export default function CommentSection({ postId }: { postId: number }) {
       <p className="text-sm text-gray-500">{getDisplayDate(comment.createdAt, comment.updatedAt)}</p>
     </div>
 
-    {currentUsername === comment.author?.username && (
-      <div className="flex gap-3">
+      {currentUserId === comment.author?.id && (
+        <div className="flex gap-3">
         <button onClick={() => startEdit(comment)} className="btn btn-danger" style={{ color: "var(--amber)" }}>
           Edit
         </button>

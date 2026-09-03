@@ -1,6 +1,6 @@
 "use client";
 
-import { use, useState, useEffect } from "react";
+import { use, useState, useEffect, useRef } from "react";
 import { useRouter } from "next/navigation";
 import {
   getPostById,
@@ -23,7 +23,7 @@ export default function EditPostPage({
   const [categoryId, setCategoryId] = useState<number | "">("");
   const [categories, setCategories] = useState<Category[]>([]);
   const [error, setError] = useState("");
-
+  const textareaRef = useRef<HTMLTextAreaElement>(null);
   const { token } = useAuth();
   const router = useRouter();
 
@@ -35,12 +35,18 @@ export default function EditPostPage({
         setTitle(post.title);
         setContent(post.content);
         setCategoryId(post.category.id);
+        setTimeout(() => {
+        if (textareaRef.current) {
+          textareaRef.current.style.height = "auto";
+          textareaRef.current.style.height = `${textareaRef.current.scrollHeight}px`;
+        }
+        }, 0);
 
         const categoriesData = await getCategories();
         setCategories(categoriesData);
       } catch (err) {
         console.error("Failed to load edit page:", err);
-        setError("Failed to load post.");
+        setError(err instanceof Error ? err.message : "Failed to load post.");
       }
     }
 
@@ -73,7 +79,7 @@ export default function EditPostPage({
       router.push(`/posts/${postId}`);
     } catch (err) {
       console.error("Failed to update post:", err);
-      setError("Failed to update post.");
+      setError(err instanceof Error ? err.message : "Failed to update post.");
     }
   }
 
@@ -93,13 +99,14 @@ export default function EditPostPage({
         />
 
         <textarea
+          ref={textareaRef}
           value={content}
           onChange={(e) => setContent(e.target.value)}
           onInput={(e) => {
             e.currentTarget.style.height = "auto";
             e.currentTarget.style.height = `${e.currentTarget.scrollHeight}px`;
           }}
-          className="w-full border p-2 rounded"
+          className="w-full border p-2 rounded resize-none overflow-hidden break-words"
           required
         />
 

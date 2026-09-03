@@ -46,7 +46,7 @@ export default function EditProfilePage({
       }
       router.push(`/profile/${userId}`);
     } catch (err) {
-      setError("Failed to save profile.");
+      setError(err instanceof Error ? err.message : "Something went wrong.");
     }
   }
 

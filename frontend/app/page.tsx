@@ -8,21 +8,23 @@ export default async function Home() {
 
   return (
     <main className="max-w-3xl mx-auto p-8">
-      <h1 className="font-didot font-bold text-4xl mb-8">Weblog</h1>
+      <h1 className="font-didot font-bold text-4xl mb-8">
+        Discover
+      </h1>
 
       {posts.length === 0 && (
         <p style={{ color: "var(--text-muted)" }}>
           Nothing published yet. Be the first to write something.
-        </p>
+        </p>  
       )}
 
       <div className="space-y-4">
         {posts.map((post) => (
           <Link href={`/posts/${post.id}`} key={post.id}>
-            <article className="card mb-6">
+            <article className="card mb-4">
               <span className="badge">{post.category?.name}</span>
 
-              <h2 className="font-didot text-2xl mt-3 mb-1">
+              <h2 className="font-didot text-2xl mt-3 mb-1 break-words">
                 {post.title}
               </h2>
 
@@ -32,9 +34,9 @@ export default async function Home() {
               </p>
 
               <p
-                className="mt-3 text-sm">
-                {post.content.slice(0, 200)}
-                {post.content.length > 200 ? "…" : ""}
+                className="mt-3 text-sm break-words">
+                {post.content.slice(0, 167)}
+                {post.content.length > 167 ? "…" : ""}
               </p>
             </article>
           </Link>

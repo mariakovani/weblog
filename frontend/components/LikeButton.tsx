@@ -26,7 +26,6 @@ export default function LikeButton({ postId }: { postId: number }) {
         setMyLikeId(mine ? mine.id : null);
       }
     } catch (err) {
-      console.log("FULL LIKE ERROR:", err);
       alert(err instanceof Error ? err.message : "Something went wrong.");
     }
 
@@ -47,7 +46,7 @@ export default function LikeButton({ postId }: { postId: number }) {
       }
       await loadLikes();
     } catch (err) {
-      alert("Something went wrong.");
+        alert(err instanceof Error ? err.message : "Something went wrong.");
     } finally {
       setLoading(false);
     }

@@ -37,7 +37,7 @@ export default function NewPostPage() {
             await createPost(title, content, categoryId, token);
             router.push("/");
         } catch (err) {
-            setError("Failed to create post.");
+            setError(err instanceof Error ? err.message : "Something went wrong.");
         }
     }
 
@@ -58,15 +58,15 @@ export default function NewPostPage() {
         />
 
         <textarea
-        placeholder="Content"
-        value={content}
-        onChange={(e) => setContent(e.target.value)}
-        onInput={(e) => {
-            e.currentTarget.style.height = "auto";
-            e.currentTarget.style.height = `${e.currentTarget.scrollHeight}px`;
-        }}
-        className="w-full border p-2 rounded"
-        required
+            placeholder="Content"
+            value={content}
+            onChange={(e) => setContent(e.target.value)}
+            onInput={(e) => {
+                e.currentTarget.style.height = "auto";
+                e.currentTarget.style.height = `${e.currentTarget.scrollHeight}px`;
+            }}
+            className="w-full border p-2 rounded resize-none overflow-hidden break-words"
+            required
         />
 
         <select

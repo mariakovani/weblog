@@ -52,7 +52,7 @@ export default async function ProfilePage({
         <p className="font-didot text-base mt-1 max-w-md">{profile.bio}</p>
         )}
 
-          <EditProfileLink userId={userId} authorUsername={user.username} />
+          <EditProfileLink userId={userId}/>
         </div>
       </div>
 
@@ -63,14 +63,14 @@ export default async function ProfilePage({
       <div className="space-y-4">
         {posts.map((post) => (
           <Link href={`/posts/${post.id}`} key={post.id}>
-            <article className="card">
+            <article className="card mb-4">
               <span className="badge">{post.category?.name}</span>
               <h3 className="font-didot text-2xl mt-3 mb-1">{post.title}</h3>
               <p className="text-sm text-gray-500 mb-4">{getDisplayDate(post.createdAt, post.updatedAt)}</p>
               <p
                 className="mt-3 text-sm">
-                {post.content.slice(0, 200)}
-                {post.content.length > 200 ? "…" : ""}
+                {post.content.slice(0, 167)}
+                {post.content.length > 167 ? "…" : ""}
               </p>
             </article>
           </Link>

@@ -21,7 +21,7 @@ public class PostService {
     }
 
     public List<Post> getAllPosts() {
-        return postRepository.findAll();
+        return postRepository.findAllByOrderByCreatedAtDesc();
     }
 
     public Post getPostById(Integer id) {
@@ -76,6 +76,6 @@ public class PostService {
     }
 
     public List<Post> getPostsByAuthorId(Integer authorId) {
-        return postRepository.findByAuthorId(authorId);
+        return postRepository.findByAuthorIdOrderByCreatedAtDesc(authorId);
     }
 }

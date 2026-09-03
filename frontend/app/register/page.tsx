@@ -19,13 +19,13 @@ export default function RegisterPage() {
       await registerUser(username, password, email);
       router.push("/login");
     } catch (err) {
-      setError("Registration failed. Try a different username.");
+      setError(err instanceof Error ? err.message : "Something went wrong.");
     }
   }
 
   return (
     <main className="max-w-sm mx-auto p-8">
-      <h1 className="text-2xl font-bold mb-6">Register</h1>
+      <h1 className="font-didot font-bold text-2xl mb-6">Register</h1>
 
       <form onSubmit={handleSubmit} className="space-y-4">
         <input
@@ -33,7 +33,7 @@ export default function RegisterPage() {
           placeholder="Username"
           value={username}
           onChange={(e) => setUsername(e.target.value)}
-          className="w-full border p-2 rounded"
+          className="input"
           required
         />
         <input
@@ -41,7 +41,7 @@ export default function RegisterPage() {
           placeholder="Email"
           value={email}
           onChange={(e) => setEmail(e.target.value)}
-          className="w-full border p-2 rounded"
+          className="input"
           required
         />
         <input
@@ -49,16 +49,13 @@ export default function RegisterPage() {
           placeholder="Password"
           value={password}
           onChange={(e) => setPassword(e.target.value)}
-          className="w-full border p-2 rounded"
+          className="input"
           required
         />
 
         {error && <p className="text-red-600 text-sm">{error}</p>}
 
-        <button
-          type="submit"
-          className="w-full bg-black text-white py-2 rounded"
-        >
+        <button type="submit" className="btn btn-primary w-full justify-center">
           Register
         </button>
       </form>
