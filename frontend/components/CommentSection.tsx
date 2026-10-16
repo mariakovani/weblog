@@ -6,7 +6,7 @@ import { getCommentsByPost, createComment, deleteComment, updateComment } from "
 import { Comment } from "@/types";
 import { getDisplayDate } from "@/lib/utils";
 import Link from "next/link";
-import { getUserIdFromToken } from "@/context/AuthContext";
+import { getUserIdFromToken, getRoleFromToken } from "@/context/AuthContext";
 
 export default function CommentSection({ postId }: { postId: number }) {
   const { token } = useAuth();
@@ -78,6 +78,7 @@ export default function CommentSection({ postId }: { postId: number }) {
   }
 
   const currentUserId = token ? getUserIdFromToken(token) : null;
+  const isAdmin = token ? getRoleFromToken(token) === "ADMIN" : false;
 
   function isEdited(comment: Comment): boolean {
     return !!comment.updatedAt && comment.updatedAt !== comment.createdAt;
@@ -139,8 +140,8 @@ export default function CommentSection({ postId }: { postId: number }) {
     </div>
   </div>
 ) : (
-  <div className="flex justify-between items-start">
-    <div>
+  <div className="flex justify-between items-start gap-4">
+    <div className="flex-1 min-w-0 break-words">
       <Link href={`/profile/${comment.author?.id}`} className="text-sm font-bold hover:underline">
         {comment.author?.username}
       </Link>
@@ -148,12 +149,14 @@ export default function CommentSection({ postId }: { postId: number }) {
       <p className="text-sm text-gray-500">{getDisplayDate(comment.createdAt, comment.updatedAt)}</p>
     </div>
 
-      {currentUserId === comment.author?.id && (
-        <div className="flex gap-3">
-        <button onClick={() => startEdit(comment)} className="btn btn-danger" style={{ color: "var(--amber)" }}>
-          Edit
-        </button>
-        <button onClick={() => handleDelete(comment.id)} className="btn btn-danger">
+    {(currentUserId === comment.author?.id || isAdmin) && (
+      <div className="flex gap-3 shrink-0 whitespace-nowrap">
+        {currentUserId === comment.author?.id && (
+          <button onClick={() => startEdit(comment)} className="btn-danger" style={{ color: "var(--amber)" }}>
+            Edit
+          </button>
+        )}
+        <button onClick={() => handleDelete(comment.id)} className="btn-danger">
           Delete
         </button>
       </div>

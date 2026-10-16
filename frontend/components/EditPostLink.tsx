@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { useAuth, getUserIdFromToken } from "@/context/AuthContext";
+import { useAuth, getUserIdFromToken, getRoleFromToken } from "@/context/AuthContext";
 import { deletePost } from "@/lib/api";
 
 export default function EditPostLink({
@@ -17,8 +17,10 @@ export default function EditPostLink({
 
   if (!token) return null;
 
-  const currentUserId = getUserIdFromToken(token);
-  if (currentUserId !== authorId) return null;
+  const isOwner = getUserIdFromToken(token) === authorId;
+  const isAdmin = getRoleFromToken(token) === "ADMIN";
+
+  if (!isOwner && !isAdmin) return null;
 
   async function handleDelete() {
     if (!token) return;
@@ -34,15 +36,20 @@ export default function EditPostLink({
 
   return (
     <div className="flex justify-start mb-4 gap-2">
-    <Link
-      href={`/posts/${postId}/edit`}
-      className="text-sm text-black border border-black px-3 py-1 rounded hover:bg-black hover:text-white transition"
-    >
-      Edit Post
-    </Link>
-    <button onClick={handleDelete} className="text-sm text-black border border-black px-3 py-1 rounded hover:bg-[#e34c51] hover:text-black transition">
+      {isOwner && (
+        <Link
+          href={`/posts/${postId}/edit`}
+          className="text-sm text-black border border-black px-3 py-1 rounded hover:bg-black hover:text-white transition"
+        >
+          Edit Post
+        </Link>
+      )}
+      <button
+        onClick={handleDelete}
+        className="text-sm text-black border border-black px-3 py-1 rounded hover:bg-[#e34c51] hover:text-black transition"
+      >
         Delete Post
       </button>
-  </div>
+    </div>
   );
 }
