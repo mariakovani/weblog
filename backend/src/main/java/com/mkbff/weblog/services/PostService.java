@@ -6,6 +6,9 @@ import com.mkbff.weblog.repository.PostRepository;
 import com.mkbff.weblog.repository.UserRepository;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
+import com.mkbff.weblog.repository.CommentRepository;
+import com.mkbff.weblog.repository.LikeRepository;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -14,10 +17,17 @@ public class PostService {
 
     private final PostRepository postRepository;
     private final UserRepository userRepository;
+    private final CommentRepository commentRepository;
+    private final LikeRepository likeRepository;
 
-    public PostService(PostRepository postRepository, UserRepository userRepository) {
+    public PostService(PostRepository postRepository,
+                    UserRepository userRepository,
+                    CommentRepository commentRepository,
+                    LikeRepository likeRepository) {
         this.postRepository = postRepository;
         this.userRepository = userRepository;
+        this.commentRepository = commentRepository;
+        this.likeRepository = likeRepository;
     }
 
     public List<Post> getAllPosts() {
@@ -38,6 +48,7 @@ public class PostService {
         return postRepository.save(post);
     }
 
+    @Transactional
     public void deletePost(Integer id) {
         Post post = postRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Post not found with id: " + id));
@@ -52,6 +63,8 @@ public class PostService {
             throw new RuntimeException("You can only delete your own posts");
         }
 
+        commentRepository.deleteByPostId(id);
+        likeRepository.deleteByPostId(id);
         postRepository.deleteById(id);
     }
 
