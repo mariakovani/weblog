@@ -63,6 +63,8 @@ body {
 .btn-primary {
   background: var(--pribtn);
   color: var(--ink);
+  white-space: nowrap; 
+  flex-shrink: 0;
 }
 .btn-primary:hover:not(:disabled) {
   background: var(--pribtn-hover);
