@@ -15,7 +15,7 @@ export default async function Home() {
       {posts.length === 0 && (
         <p style={{ color: "var(--text-muted)" }}>
           Nothing published yet. Be the first to write something.
-        </p>  
+        </p>
       )}
 
       <div className="space-y-4">

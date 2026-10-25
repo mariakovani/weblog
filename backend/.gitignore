@@ -31,3 +31,6 @@ build/
 
 ### VS Code ###
 .vscode/
+
+### Password files and settings###
+backend/src/main/resources/application.properties

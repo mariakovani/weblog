@@ -1,4 +1,4 @@
-package main.java.com.mkbff.weblog.exception;
+package com.mkbff.weblog.exception;
 
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;

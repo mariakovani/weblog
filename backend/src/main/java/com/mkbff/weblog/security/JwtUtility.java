@@ -11,11 +11,11 @@ import java.util.Date;
 
 @Component
 public class JwtUtility {
-   private final SecretKey key;
+    private final SecretKey key;
     private final long expiration;
 
     public JwtUtility(@Value("${jwt.secret}") String secret,
-                    @Value("${jwt.expiration}") long expiration) {
+            @Value("${jwt.expiration}") long expiration) {
         this.key = Keys.hmacShaKeyFor(secret.getBytes(StandardCharsets.UTF_8));
         this.expiration = expiration;
     }
@@ -44,13 +44,13 @@ public class JwtUtility {
     }
 
     public String extractRole(String token) {
-    return Jwts.parser()
-            .verifyWith(key)
-            .build()
-            .parseSignedClaims(token)
-            .getPayload()
-            .get("role", String.class);
-}
+        return Jwts.parser()
+                .verifyWith(key)
+                .build()
+                .parseSignedClaims(token)
+                .getPayload()
+                .get("role", String.class);
+    }
 
     public boolean isTokenValid(String token) {
         try {
@@ -59,5 +59,5 @@ public class JwtUtility {
         } catch (Exception e) {
             return false;
         }
-    } 
+    }
 }

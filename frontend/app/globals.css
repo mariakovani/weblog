@@ -63,9 +63,10 @@ body {
 .btn-primary {
   background: var(--pribtn);
   color: var(--ink);
-  white-space: nowrap; 
+  white-space: nowrap;
   flex-shrink: 0;
 }
+
 .btn-primary:hover:not(:disabled) {
   background: var(--pribtn-hover);
   transform: translateY(-1px);
@@ -76,6 +77,7 @@ body {
   color: var(--text);
   border-color: var(--border);
 }
+
 .btn-ghost:hover:not(:disabled) {
   border-color: var(--text-muted);
 }
@@ -87,6 +89,7 @@ body {
   font-size: 0.75rem;
   font-weight: 400;
 }
+
 .btn-danger:hover:not(:disabled) {
   color: var(--coral-hover);
 }
@@ -104,6 +107,7 @@ body {
   border-color: #790707;
   color: #414040;
 }
+
 .btn-like:not(.active):hover:not(:disabled) {
   background: #f49b9e;
 }
@@ -116,6 +120,7 @@ body {
   padding: 1.5rem;
   transition: border-color 0.15s ease, transform 0.15s ease;
 }
+
 .card:hover {
   border-color: var(--text-muted);
 }
@@ -132,13 +137,16 @@ body {
   font-size: 0.9rem;
   transition: border-color 0.15s ease;
 }
+
 .input:focus {
   outline: none;
   border-color: var(--amber);
 }
+
 .input::placeholder {
   color: var(--text-muted);
 }
+
 /* Badge (category tag) */
 .badge {
   display: inline-block;
